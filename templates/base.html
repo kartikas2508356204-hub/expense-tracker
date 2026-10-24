@@ -3,12 +3,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Smart Expense Tracker</title>
 <style>
- body{font-family:system-ui,sans-serif;max-width:860px;margin:2rem auto;padding:0 1rem;color:#222}
- h1{margin-bottom:.2rem} .card{border:1px solid #ddd;border-radius:8px;padding:1rem;margin:1rem 0}
- input,select,button{padding:.5rem;margin:.2rem;border:1px solid #bbb;border-radius:6px}
- button{background:#16a34a;color:#fff;border:0;cursor:pointer} button.del{background:#dc2626}
- table{width:100%;border-collapse:collapse} th,td{text-align:left;padding:.5rem;border-bottom:1px solid #eee}
- .tot{display:flex;gap:.5rem;flex-wrap:wrap} .pill{background:#eef2ff;padding:.4rem .8rem;border-radius:999px}
- form.inline{display:inline}
+ :root{--bg:#f4f6fb;--card:#fff;--text:#1f2937;--muted:#6b7280;--line:#e5e7eb;--primary:#4f46e5;--primary-d:#4338ca;--danger:#ef4444}
+ *{box-sizing:border-box}
+ body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}
+ header{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;padding:1.6rem 1rem 4.5rem}
+ .wrap{max-width:960px;margin:0 auto;padding:0 1rem}
+ header h1{margin:0;font-size:1.9rem} header p{margin:.3rem 0 0;opacity:.85}
+ main{margin-top:-4rem;padding-bottom:3rem}
+ .card{background:var(--card);border-radius:14px;padding:1.2rem 1.4rem;margin-bottom:1.1rem;box-shadow:0 4px 14px rgba(17,24,39,.07)}
+ .card h3{margin:0 0 .9rem;font-size:1.05rem}
+ .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.1rem}
+ .stat{background:var(--card);border-radius:14px;padding:1rem 1.2rem;box-shadow:0 4px 14px rgba(17,24,39,.07)}
+ .stat .label{color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+ .stat .value{font-size:1.6rem;font-weight:700;margin-top:.2rem}
+ form.add{display:grid;grid-template-columns:2fr 1fr 1.2fr 1.2fr auto;gap:.6rem}
+ input,select{padding:.65rem .75rem;border:1px solid var(--line);border-radius:9px;font-size:.95rem;background:#fff;width:100%}
+ input:focus,select:focus{outline:2px solid #c7d2fe;border-color:var(--primary)}
+ button,.btn{background:var(--primary);color:#fff;border:0;border-radius:9px;padding:.65rem 1.1rem;font-size:.95rem;cursor:pointer;text-decoration:none;display:inline-block}
+ button:hover,.btn:hover{background:var(--primary-d)}
+ button.del{background:#fee2e2;color:var(--danger);padding:.4rem .8rem} button.del:hover{background:var(--danger);color:#fff}
+ a.edit{color:var(--primary);text-decoration:none;font-weight:600;margin-right:.6rem}
+ .bars .row{display:flex;align-items:center;gap:.8rem;margin:.5rem 0;font-size:.92rem}
+ .bars .name{width:120px} .bars .track{flex:1;background:#eef0f6;border-radius:99px;height:10px;overflow:hidden}
+ .bars .fill{height:100%;border-radius:99px;background:var(--primary)} .bars .amt{width:100px;text-align:right;font-weight:600}
+ .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem}
+ .toolbar select{width:auto}
+ table{width:100%;border-collapse:collapse} th{color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;text-align:left;padding:.6rem .5rem;border-bottom:1px solid var(--line)}
+ td{padding:.8rem .5rem;border-bottom:1px solid #f1f2f6} tr:hover td{background:#fafbff}
+ .amount{font-weight:700} form.inline{display:inline}
+ .badge{padding:.2rem .65rem;border-radius:99px;font-size:.8rem;font-weight:600;background:#e5e7eb}
+ .b-Food{background:#ffedd5;color:#c2410c}.b-Travel{background:#dbeafe;color:#1d4ed8}.b-Books{background:#dcfce7;color:#15803d}
+ .b-Entertainment{background:#fae8ff;color:#a21caf}.b-Bills{background:#fee2e2;color:#b91c1c}.b-Health{background:#ccfbf1;color:#0f766e}.b-Other{background:#e5e7eb;color:#374151}
+ .empty{text-align:center;color:var(--muted);padding:2rem 0}
+ footer{text-align:center;color:var(--muted);font-size:.8rem;padding-bottom:1.5rem}
+ @media(max-width:720px){.stats{grid-template-columns:1fr}form.add{grid-template-columns:1fr 1fr}form.add button{grid-column:1/-1}
+  .bars .name{width:90px} th:nth-child(1),td:nth-child(1){display:none}}
 </style></head>
-<body><h1>💰 Smart Expense Tracker</h1>{% block content %}{% endblock %}</body></html>
+<body>
+<header><div class="wrap"><h1>💰 Smart Expense Tracker</h1><p>Track every rupee. Know where your money goes.</p></div></header>
+<main class="wrap">{% block content %}{% endblock %}</main>
+<footer>Built with Flask · SQLite · Docker</footer>
+</body></html>
