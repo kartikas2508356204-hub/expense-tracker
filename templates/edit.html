@@ -1,9 +1,25 @@
 {% extends "base.html" %}{% block content %}
-<div class="card" style="max-width:640px;margin:0 auto"><h3>✏️ Edit expense</h3>
-<form class="add" style="grid-template-columns:1fr 1fr" method="post">
- <input name="title" value="{{e.title}}" required>
- <input name="amount" type="number" step="0.01" value="{{e.amount}}" required>
- <select name="category">{% for c in categories %}<option {% if c==e.category %}selected{% endif %}>{{c}}</option>{% endfor %}</select>
- <input name="date" type="date" value="{{e.date}}" required>
- <button>Save changes</button><a class="btn" style="background:#e5e7eb;color:#374151;text-align:center" href="/">Cancel</a></form></div>
+{% set known = e.category in categories %}
+<div class="card" style="max-width:560px;margin:0 auto"><h3>✏️ Edit expense</h3>
+<form method="post">
+ <label>Title</label><input name="title" value="{{e.title}}" required>
+ <div class="row2">
+  <div><label>Amount (₹)</label><input name="amount" type="number" step="0.01" value="{{e.amount}}" required></div>
+  <div><label>Date</label><input name="date" type="date" value="{{e.date}}" required></div>
+ </div>
+ <label>Category</label>
+ <select name="category" id="catSelect">{% for c in categories %}<option {% if (known and c==e.category) or (not known and c=='Other') %}selected{% endif %}>{{c}}</option>{% endfor %}</select>
+ <div id="customBox" style="display:none">
+  <label>Write your own category</label>
+  <input name="custom_category" id="customInput" maxlength="30" value="{{ '' if known else e.category }}" placeholder="e.g. Gym, Gift, Medicine">
+ </div>
+ <div class="row2" style="margin-top:1.2rem">
+  <button>Save changes</button>
+  <a class="btn" style="background:#e2e8f0;color:#334155;text-align:center" href="/">Cancel</a></div>
+</form></div>
+<script>
+ const sel = document.getElementById('catSelect'), box = document.getElementById('customBox');
+ function toggleCustom(){ box.style.display = sel.value === 'Other' ? 'block' : 'none'; }
+ sel.addEventListener('change', toggleCustom); toggleCustom();
+</script>
 {% endblock %}

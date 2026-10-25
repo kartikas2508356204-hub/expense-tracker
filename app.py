@@ -7,6 +7,14 @@ app = Flask(__name__)
 CATEGORIES = ["Food", "Travel", "Books", "Entertainment", "Bills", "Other"]
 
 
+def resolve_category(category, custom):
+    """If 'Other' is chosen and a custom name is typed, use the custom name."""
+    custom = (custom or "").strip()
+    if category == "Other" and custom:
+        return custom[:30]
+    return category
+
+
 def get_db():
     conn = sqlite3.connect(os.environ.get("DB_PATH", "expenses.db"))
     conn.row_factory = sqlite3.Row
@@ -50,7 +58,9 @@ def add():
         return "Title required and amount must be positive", 400
     with get_db() as c:
         c.execute("INSERT INTO expenses(title,amount,category,date) VALUES(?,?,?,?)",
-                  (title, amount, request.form["category"], request.form["date"]))
+                  (title, amount,
+                   resolve_category(request.form["category"], request.form.get("custom_category")),
+                   request.form["date"]))
     return redirect(url_for("index"))
 
 
@@ -60,7 +70,8 @@ def edit(eid):
         if request.method == "POST":
             c.execute("UPDATE expenses SET title=?, amount=?, category=?, date=? WHERE id=?",
                       (request.form["title"].strip(), float(request.form["amount"]),
-                       request.form["category"], request.form["date"], eid))
+                       resolve_category(request.form["category"], request.form.get("custom_category")),
+                       request.form["date"], eid))
             return redirect(url_for("index"))
         row = c.execute("SELECT * FROM expenses WHERE id=?", (eid,)).fetchone()
     if row is None:
