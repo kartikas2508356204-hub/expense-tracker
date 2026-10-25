@@ -19,3 +19,10 @@ def test_add_and_list():
 def test_invalid_amount():
     r = client.post("/add", data={"title": "X", "amount": "-5", "category": "Food", "date": "2026-10-24"})
     assert r.status_code == 400
+
+
+def test_custom_category():
+    r = client.post("/add", data={"title": "Gym fee", "amount": "500", "category": "Other",
+                                  "custom_category": "Fitness", "date": "2026-10-24"})
+    assert r.status_code == 302
+    assert b"Fitness" in client.get("/").data
